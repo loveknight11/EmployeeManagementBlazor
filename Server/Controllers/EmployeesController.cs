@@ -1,4 +1,5 @@
 ﻿using EmployeeManagementBlazor.Server.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,15 @@ namespace EmployeeManagementBlazor.Server.Controllers
 
         public async Task<ActionResult> GetEmployees()
         {
-            return Ok(await employeeRepository.GetEmployees());
+            try
+            {
+                return Ok(await employeeRepository.GetEmployees());
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal DB Error");
+            }
+            
         }
     }
 }
