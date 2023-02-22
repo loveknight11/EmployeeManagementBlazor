@@ -52,5 +52,24 @@ namespace EmployeeManagementBlazor.Server.Controllers
             }
 
         }
+
+        [HttpPost]
+        public async Task<ActionResult<Employee>> CreateEmployee(Employee employee)
+        {
+            try
+            {
+                if (employee == null)
+                {
+                    return BadRequest();
+                }
+                var result = await employeeRepository.AddEmployee(employee);
+                return CreatedAtAction(nameof(GetEmployee), new { id = result.EmployeeId }, result);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal DB Error");
+            }
+
+        }
     }
 }

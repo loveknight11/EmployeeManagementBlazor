@@ -17,6 +17,10 @@ namespace EmployeeManagementBlazor.Server.Model
         }
         public async Task<Employee> AddEmployee(Employee employee)
         {
+            if (employee.Department != null)
+            {
+                cxt.Entry(employee.Department).State = EntityState.Unchanged;
+            }
             var result = await cxt.Employees.AddAsync(employee);
             await cxt.SaveChangesAsync();
             return result.Entity;
@@ -48,7 +52,7 @@ namespace EmployeeManagementBlazor.Server.Model
 
         public async Task<IEnumerable<Employee>> GetEmployees()
         {
-            return await cxt.Employees.ToListAsync();
+            return await cxt.Employees.Include(x => x.Department).ToListAsync();
         }
 
         public async Task<IEnumerable<Employee>> Search(string name, Gender? gender)
