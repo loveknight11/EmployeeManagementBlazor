@@ -1,4 +1,5 @@
 ﻿using EmployeeManagementBlazor.Server.Model;
+using EmployeeManagementBlazor.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,6 +20,7 @@ namespace EmployeeManagementBlazor.Server.Controllers
             this.employeeRepository = employeeRepository;
         }
 
+        [HttpGet]
         public async Task<ActionResult> GetEmployees()
         {
             try
@@ -30,6 +32,25 @@ namespace EmployeeManagementBlazor.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal DB Error");
             }
             
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Employee>> GetEmployee(int id)
+        {
+            try
+            {
+                var employee = await employeeRepository.GetEmployee(id);
+                if (employee == null)
+                {
+                    return NotFound();
+                }
+                return employee;
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal DB Error");
+            }
+
         }
     }
 }
