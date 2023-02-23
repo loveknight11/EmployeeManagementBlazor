@@ -102,7 +102,27 @@ namespace EmployeeManagementBlazor.Server.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal DB Error");
             }
+        }
 
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> DeleteEmployee(int id)
+        {
+            try
+            {
+
+                var emp = await employeeRepository.GetEmployee(id);
+                if (emp == null)
+                {
+                    return NotFound($"Employee with Id = {id} not found");
+                }
+
+                await employeeRepository.DeleteEmployee(id);
+                return Ok($"Employee with Id = {id} deleted successfully");
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal DB Error");
+            }
         }
     }
 }

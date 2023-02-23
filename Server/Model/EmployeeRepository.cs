@@ -96,5 +96,7 @@ namespace EmployeeManagementBlazor.Server.Model
             }
             return emp;
         }
+
+
     }
 }
