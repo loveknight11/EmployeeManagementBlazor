@@ -79,5 +79,30 @@ namespace EmployeeManagementBlazor.Server.Controllers
             }
 
         }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<Employee>> UpdateEmployee(int id, Employee employee)
+        {
+            try
+            {
+                if (employee.EmployeeId != id)
+                {
+                    return BadRequest("Employee Id Mismatch");
+                }
+
+                var emp = await employeeRepository.GetEmployee(id);
+                if (emp == null)
+                {
+                    return NotFound($"Employee with Id = {id} not found");
+                }
+
+                return await employeeRepository.UpdateEmployee(employee);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal DB Error");
+            }
+
+        }
     }
 }

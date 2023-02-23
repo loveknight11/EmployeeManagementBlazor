@@ -77,7 +77,15 @@ namespace EmployeeManagementBlazor.Server.Model
             if (emp != null)
             {
                 emp.DateOfBrith = employee.DateOfBrith;
-                emp.DepartmentId = employee.DepartmentId;
+                if (employee.DepartmentId != 0)
+                {
+                    emp.DepartmentId = employee.DepartmentId;
+                }
+                else if (employee.Department != null)
+                {
+                    emp.DepartmentId = employee.Department.DepartmentId;
+                }
+                
                 emp.Email = employee.Email;
                 emp.FirstName = employee.FirstName;
                 emp.Gender = employee.Gender;
