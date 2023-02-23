@@ -62,6 +62,14 @@ namespace EmployeeManagementBlazor.Server.Controllers
                 {
                     return BadRequest();
                 }
+
+                var emp = await employeeRepository.GetEmployeeByEmail(employee.Email);
+                if (emp != null)
+                {
+                    ModelState.AddModelError("Email", "Email is already in use");
+                    return BadRequest(ModelState);
+                }
+
                 var result = await employeeRepository.AddEmployee(employee);
                 return CreatedAtAction(nameof(GetEmployee), new { id = result.EmployeeId }, result);
             }
