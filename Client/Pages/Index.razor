@@ -7,7 +7,14 @@
 </Syncfusion.Blazor.Spinner.SfSpinner>
 @if (!SpinnerVisible)
 {
-    <SfGrid DataSource="@Employees" AllowPaging="true">
+    <SfGrid DataSource="@Employees" AllowPaging="true" AllowSorting="true">
+        <GridSortSettings >
+            <GridSortColumns>
+                <GridSortColumn Field="@nameof(Employee.EmployeeId)">
+                    
+                </GridSortColumn>
+            </GridSortColumns>
+        </GridSortSettings>
         <GridPageSettings PageSize="5" PageCount="3" PageSizes="@PageCountDropDown"></GridPageSettings>
         <GridColumns>
             <GridColumn Field=@nameof(Employee.EmployeeId) HeaderText="Employee ID"></GridColumn>
