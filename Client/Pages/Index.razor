@@ -7,7 +7,8 @@
 </Syncfusion.Blazor.Spinner.SfSpinner>
 @if (!SpinnerVisible)
 {
-    <SfGrid DataSource="@Employees">
+    <SfGrid DataSource="@Employees" AllowPaging="true">
+        <GridPageSettings PageSize="5" PageCount="3" PageSizes="@PageCountDropDown"></GridPageSettings>
         <GridColumns>
             <GridColumn Field=@nameof(Employee.EmployeeId) HeaderText="Employee ID"></GridColumn>
             <GridColumn Field=@nameof(Employee.FirstName) HeaderText="First Name"></GridColumn>
@@ -18,18 +19,19 @@
 }
 
     @code {
-public List<Employee> Employees { get; set; }
+        public string[] PageCountDropDown { get; set; } = new string[] { "All" ,"5","10","15","20"};
+        public List<Employee> Employees { get; set; }
 
-    [Inject]
-    public IEmployeeService EmployeeService { get; set; }
+        [Inject]
+        public IEmployeeService EmployeeService { get; set; }
 
-    public bool SpinnerVisible { get; set; }
+        public bool SpinnerVisible { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        SpinnerVisible = true;
-        await Task.Delay(3000);
-        Employees = (await EmployeeService.GetEmployees()).ToList();
-        SpinnerVisible = false;
-    }
+        protected override async Task OnInitializedAsync()
+        {
+            SpinnerVisible = true;
+            //await Task.Delay(3000);
+            Employees = (await EmployeeService.GetEmployees()).ToList();
+            SpinnerVisible = false;
+        }
     }
