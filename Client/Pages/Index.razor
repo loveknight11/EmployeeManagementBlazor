@@ -2,23 +2,34 @@
 @using EmployeeManagementBlazor.Shared
 @using Syncfusion.Blazor.Grids
 
-<SfGrid DataSource="@Employees">
-    <GridColumns>
-        <GridColumn Field=@nameof(Employee.EmployeeId) HeaderText="Employee ID"></GridColumn>
-        <GridColumn Field=@nameof(Employee.FirstName) HeaderText="First Name"></GridColumn>
-        <GridColumn Field=@nameof(Employee.LastName) HeaderText=" Last Name"></GridColumn>
-        <GridColumn Field=@nameof(Employee.Email) HeaderText="Email"></GridColumn>
-    </GridColumns>
-</SfGrid>
+<Syncfusion.Blazor.Spinner.SfSpinner @bind-Visible="SpinnerVisible" Label="Loading Employees ...">
 
-@code {
-    public List<Employee> Employees { get; set; }
+</Syncfusion.Blazor.Spinner.SfSpinner>
+@if (!SpinnerVisible)
+{
+    <SfGrid DataSource="@Employees">
+        <GridColumns>
+            <GridColumn Field=@nameof(Employee.EmployeeId) HeaderText="Employee ID"></GridColumn>
+            <GridColumn Field=@nameof(Employee.FirstName) HeaderText="First Name"></GridColumn>
+            <GridColumn Field=@nameof(Employee.LastName) HeaderText=" Last Name"></GridColumn>
+            <GridColumn Field=@nameof(Employee.Email) HeaderText="Email"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+}
+
+    @code {
+public List<Employee> Employees { get; set; }
 
     [Inject]
     public IEmployeeService EmployeeService { get; set; }
 
+    public bool SpinnerVisible { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
+        SpinnerVisible = true;
+        await Task.Delay(3000);
         Employees = (await EmployeeService.GetEmployees()).ToList();
+        SpinnerVisible = false;
     }
-}
+    }
