@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Linq.Dynamic.Core;
 
 namespace EmployeeManagementBlazor.Server.Model
 {
@@ -50,11 +51,11 @@ namespace EmployeeManagementBlazor.Server.Model
                 .FirstOrDefaultAsync(x => x.Email == email);
         }
 
-        public async Task<EmployeeData> GetEmployees(int skip, int take)
+        public async Task<EmployeeData> GetEmployees(int skip, int take, string sortBy)
         {
             EmployeeData employeeData = new EmployeeData() { 
             Count = await cxt.Employees.CountAsync(),
-            Employees = await cxt.Employees.Skip(skip).Take(take).Include(x => x.Department).ToListAsync()
+            Employees = await cxt.Employees.OrderBy(sortBy).Skip(skip).Take(take).Include(x => x.Department).ToListAsync()
             };
             return employeeData ;
         }

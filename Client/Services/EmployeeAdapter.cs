@@ -17,7 +17,14 @@ namespace EmployeeManagementBlazor.Client.Services
         }
         public override async Task<object> ReadAsync(DataManagerRequest dataManagerRequest, string key = null)
         {
-            var data = await employeeService.GetEmployees(dataManagerRequest.Skip, dataManagerRequest.Take);
+            string Sort = null;
+            if (dataManagerRequest.Sorted != null)
+            {
+                dataManagerRequest.Sorted.Reverse();
+                Sort = string.Join(",", dataManagerRequest.Sorted.Select(x => $"{x.Name} {x.Direction}"));
+            }
+            
+            var data = await employeeService.GetEmployees(dataManagerRequest.Skip, dataManagerRequest.Take, Sort);
             
             DataResult dataResult = new DataResult() { 
             Count = data.Count,
