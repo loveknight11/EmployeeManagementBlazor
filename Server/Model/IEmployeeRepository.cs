@@ -9,7 +9,7 @@ namespace EmployeeManagementBlazor.Server.Model
     public interface IEmployeeRepository
     {
         Task<IEnumerable<Employee>> Search(string name, Gender? gender);
-        Task<IEnumerable<Employee>> GetEmployees();
+        Task<EmployeeData> GetEmployees(int skip = 0, int take = 5);
         Task<Employee> GetEmployee(int employeeId);
         Task<Employee> GetEmployeeByEmail(string email);
         Task<Employee> AddEmployee(Employee employee);

@@ -25,6 +25,7 @@ namespace EmployeeManagementBlazor.Client
 
             //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddSyncfusionBlazor();
+            builder.Services.AddScoped<EmployeeAdapter>();
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(builder.Configuration["Syncfusion"]);
 
 

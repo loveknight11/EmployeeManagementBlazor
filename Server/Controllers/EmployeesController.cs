@@ -21,11 +21,11 @@ namespace EmployeeManagementBlazor.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetEmployees()
+        public async Task<ActionResult> GetEmployees(int skip, int take)
         {
             try
             {
-                return Ok(await employeeRepository.GetEmployees());
+                return Ok(await employeeRepository.GetEmployees(skip, take));
             }
             catch (Exception)
             {

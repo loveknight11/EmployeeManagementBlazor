@@ -50,9 +50,13 @@ namespace EmployeeManagementBlazor.Server.Model
                 .FirstOrDefaultAsync(x => x.Email == email);
         }
 
-        public async Task<IEnumerable<Employee>> GetEmployees()
+        public async Task<EmployeeData> GetEmployees(int skip, int take)
         {
-            return await cxt.Employees.Include(x => x.Department).ToListAsync();
+            EmployeeData employeeData = new EmployeeData() { 
+            Count = await cxt.Employees.CountAsync(),
+            Employees = await cxt.Employees.Skip(skip).Take(take).Include(x => x.Department).ToListAsync()
+            };
+            return employeeData ;
         }
 
         public async Task<IEnumerable<Employee>> Search(string name, Gender? gender)

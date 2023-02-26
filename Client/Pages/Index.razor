@@ -2,12 +2,13 @@
 @using EmployeeManagementBlazor.Shared
 @using Syncfusion.Blazor.Grids
 
-<Syncfusion.Blazor.Spinner.SfSpinner @bind-Visible="SpinnerVisible" Label="Loading Employees ...">
+@*<Syncfusion.Blazor.Spinner.SfSpinner @bind-Visible="SpinnerVisible" Label="Loading Employees ...">
 
-</Syncfusion.Blazor.Spinner.SfSpinner>
-@if (!SpinnerVisible)
-{
-    <SfGrid DataSource="@Employees" AllowPaging="true" AllowSorting="true">
+</Syncfusion.Blazor.Spinner.SfSpinner>*@
+@*@if (!SpinnerVisible)
+{*@
+    <SfGrid TValue="Employee" AllowPaging="true" AllowSorting="true">
+        <SfDataManager Adaptor="Adaptors.CustomAdaptor" AdaptorInstance="@typeof(EmployeeAdapter)"></SfDataManager>
         <GridSortSettings >
             <GridSortColumns>
                 <GridSortColumn Field="@nameof(Employee.EmployeeId)">
@@ -23,22 +24,22 @@
             <GridColumn Field=@nameof(Employee.Email) HeaderText="Email"></GridColumn>
         </GridColumns>
     </SfGrid>
-}
+@*}*@
 
     @code {
         public string[] PageCountDropDown { get; set; } = new string[] { "All" ,"5","10","15","20"};
-        public List<Employee> Employees { get; set; }
+        //public List<Employee> Employees { get; set; }
 
-        [Inject]
-        public IEmployeeService EmployeeService { get; set; }
+        //[Inject]
+        //public IEmployeeService EmployeeService { get; set; }
 
-        public bool SpinnerVisible { get; set; }
+        //public bool SpinnerVisible { get; set; }
 
-        protected override async Task OnInitializedAsync()
-        {
-            SpinnerVisible = true;
-            //await Task.Delay(3000);
-            Employees = (await EmployeeService.GetEmployees()).ToList();
-            SpinnerVisible = false;
-        }
+        //protected override async Task OnInitializedAsync()
+        //{
+        //    SpinnerVisible = true;
+        //    //await Task.Delay(3000);
+        //    Employees = (await EmployeeService.GetEmployees()).ToList();
+        //    SpinnerVisible = false;
+        //}
     }
