@@ -1,7 +1,8 @@
 ﻿@page "/all"
 <h3>AllEmployees</h3>
 
-<SfGrid DataSource="Employees" AllowGrouping="true">
+<SfGrid DataSource="Employees" AllowGrouping="true" AllowFiltering="true">
+    <GridFilterSettings Mode="FilterBarMode.Immediate" ImmediateModeDelay="200"></GridFilterSettings>
     <GridGroupSettings>
         <CaptionTemplate>
             @{
@@ -20,6 +21,9 @@
 
     </GridColumns>
 </SfGrid>
+
+
+
 
 @code {
     [Inject]
