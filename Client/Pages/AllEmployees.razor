@@ -1,8 +1,10 @@
 ﻿@page "/all"
 <h3>AllEmployees</h3>
 
-<SfGrid DataSource="Employees" AllowGrouping="true" AllowFiltering="true">
-    <GridFilterSettings Mode="FilterBarMode.Immediate" ImmediateModeDelay="200"></GridFilterSettings>
+<SfGrid @ref="grid" DataSource="Employees" AllowGrouping="true" AllowFiltering="true">
+    <GridFilterSettings Mode="FilterBarMode.Immediate" ImmediateModeDelay="200">
+
+    </GridFilterSettings>
     <GridGroupSettings>
         <CaptionTemplate>
             @{
@@ -16,7 +18,14 @@
         <GridColumn Field=@nameof(Employee.FirstName) HeaderText="First Name"></GridColumn>
         <GridColumn Field=@nameof(Employee.LastName) HeaderText=" Last Name"></GridColumn>
         <GridColumn Field=@nameof(Employee.Email) HeaderText="Email"></GridColumn>
-        <GridColumn Field="@nameof(Employee.Gender)" HeaderText="Gender"></GridColumn>
+        <GridColumn Field="@nameof(Employee.Gender)" HeaderText="Gender">
+            <FilterTemplate>
+                <SfDropDownList DataSource="@GenderDropDownSource" Placeholder="All" TItem="DropDownItem" TValue="string">
+                    <DropDownListFieldSettings Text="@nameof(DropDownItem.Text)" Value="@nameof(DropDownItem.Value)"></DropDownListFieldSettings>
+                    <DropDownListEvents TValue="string" TItem="DropDownItem" ValueChange="@DropValueChanged"></DropDownListEvents>
+                </SfDropDownList>
+            </FilterTemplate>
+        </GridColumn>
         <GridColumn Field="@nameof(Employee.DateOfBrith)" HeaderText="BirthDate" Format="d"></GridColumn>
 
     </GridColumns>
@@ -29,9 +38,25 @@
     [Inject]
     public IEmployeeService employeeService { get; set; }
 
+    public SfGrid<Employee> grid { get; set; }
+
+    protected void DropValueChanged(ChangeEventArgs<string, DropDownItem> args)
+    {
+        if (args.Value == "All")
+        {
+            grid.ClearFilteringAsync(nameof(Employee.Gender));
+        }
+        else
+        {
+            grid.FilterByColumnAsync(nameof(Employee.Gender), "equal", args.Value);
+        }
+    }
+
     IEnumerable<Employee> Employees = new List<Employee>();
+    List<DropDownItem> GenderDropDownSource = new List<DropDownItem>();
     protected override async Task OnInitializedAsync()
     {
         Employees = await employeeService.GetAllEmployees();
+        GenderDropDownSource = EnumHelper.EnumToList<Gender>("All", "All");
     }
 }
