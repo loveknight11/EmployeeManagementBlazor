@@ -34,6 +34,20 @@ namespace EmployeeManagementBlazor.Server.Controllers
             
         }
 
+        [HttpGet("all")]
+        public async Task<ActionResult> GetAllEmployees()
+        {
+            try
+            {
+                return Ok(await employeeRepository.GetAllEmployees());
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal DB Error");
+            }
+
+        }
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Employee>> GetEmployee(int id)
         {

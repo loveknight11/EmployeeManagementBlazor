@@ -1,0 +1,33 @@
+﻿@page "/all"
+<h3>AllEmployees</h3>
+
+<SfGrid DataSource="Employees" AllowGrouping="true">
+    <GridGroupSettings>
+        <CaptionTemplate>
+            @{
+                var employee = (context as CaptionTemplateContext);
+                <div>@employee.Field : @employee.Key - @employee.Count Employees</div>
+            }
+        </CaptionTemplate>
+    </GridGroupSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(Employee.EmployeeId) HeaderText="Employee ID"></GridColumn>
+        <GridColumn Field=@nameof(Employee.FirstName) HeaderText="First Name"></GridColumn>
+        <GridColumn Field=@nameof(Employee.LastName) HeaderText=" Last Name"></GridColumn>
+        <GridColumn Field=@nameof(Employee.Email) HeaderText="Email"></GridColumn>
+        <GridColumn Field="@nameof(Employee.Gender)" HeaderText="Gender"></GridColumn>
+        <GridColumn Field="@nameof(Employee.DateOfBrith)" HeaderText="BirthDate" Format="d"></GridColumn>
+
+    </GridColumns>
+</SfGrid>
+
+@code {
+    [Inject]
+    public IEmployeeService employeeService { get; set; }
+
+    IEnumerable<Employee> Employees = new List<Employee>();
+    protected override async Task OnInitializedAsync()
+    {
+        Employees = await employeeService.GetAllEmployees();
+    }
+}

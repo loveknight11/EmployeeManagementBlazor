@@ -37,6 +37,11 @@ namespace EmployeeManagementBlazor.Server.Model
             }
         }
 
+        public async Task<IEnumerable<Employee>> GetAllEmployees()
+        {
+            return await cxt.Employees.ToListAsync();
+        }
+
         public async Task<Employee> GetEmployee(int employeeId)
         {
             return await cxt.Employees
