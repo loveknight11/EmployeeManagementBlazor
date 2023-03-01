@@ -39,7 +39,7 @@ namespace EmployeeManagementBlazor.Server.Model
 
         public async Task<IEnumerable<Employee>> GetAllEmployees()
         {
-            return await cxt.Employees.ToListAsync();
+            return await cxt.Employees.Include(x => x.Department).ToListAsync();
         }
 
         public async Task<Employee> GetEmployee(int employeeId)
